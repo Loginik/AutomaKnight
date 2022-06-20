@@ -22,10 +22,16 @@ public class Player extends Entity{
 	
 	GamePanel gp;
 	KeyHandler keyH;
+	
+	public final int screenX;
+	public final int screenY;
 	 
 	public Player(GamePanel gp, KeyHandler keyH) {
 		this.gp = gp;
 		this.keyH = keyH;
+		
+		screenX = gp.screenWidth / 2 - (eScale / 2);
+		screenY = gp.screenHeight / 2 - (eScale / 2);
 		
 		setDefaultValues();
 		getPlayerImage();
@@ -33,33 +39,32 @@ public class Player extends Entity{
 	
 	public void setDefaultValues() {
 		
-		x = 100;
-		y = 100;
+		worldX = gp.tileSize * 23;
+		worldY = gp.tileSize * 21;
 		speed = 4;
 		direction = "down";
 	}
 	
 	public void getPlayerImage() {
-		
-		//Image image = new ImageIcon("/player/Chara1").getImage();
-		
 		BufferedImage img = null;
 		try {
 			img = ImageIO.read(getClass().getResourceAsStream("/player/chara1.png"));
-			//BufferedImage image = ImageIO.read(new File("res_class/player/chara1.png"));
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
 		
-			
-			up1 = img.getSubimage(0, 96, 32, 32);
-			up2 = img.getSubimage(32, 96, 32, 32);
-			down1 = img.getSubimage(0, 0, 32, 32);
-			down2 = img.getSubimage(32, 0, 32, 32);
-			left1 = img.getSubimage(0, 32, 32, 32);
-			left2 = img.getSubimage(32, 32, 32, 32);
-			right1 = img.getSubimage(32, 32, 32, 32);
-			right2 = img.getSubimage(32, 32, 32, 32);
+		up1 = img.getSubimage(0, 96, 32, 32);
+		up2 = img.getSubimage(32, 96, 32, 32);
+		up3 = img.getSubimage(64, 96, 32, 32);
+		down1 = img.getSubimage(0, 0, 32, 32);
+		down2 = img.getSubimage(32, 0, 32, 32);
+		down3 = img.getSubimage(64, 0, 32, 32);
+		left1 = img.getSubimage(0, 32, 32, 32);
+		left2 = img.getSubimage(32, 32, 32, 32);
+		left3 = img.getSubimage(64, 32, 32, 32);
+		right1 = img.getSubimage(0, 64, 32, 32);
+		right2 = img.getSubimage(32, 64, 32, 32);
+		right3 = img.getSubimage(64, 64, 32, 32);
 	}
 	
 	public void update() {
@@ -69,31 +74,64 @@ public class Player extends Entity{
 			
 			if(keyH.upPressed == true) {
 			direction = "up";
-			y -= speed;
+			worldY -= speed;
 		} 	
 		else if(keyH.downPressed == true) {
 			direction = "down";
-			y += speed;
+			worldY += speed;
 		} 	
 		else if(keyH.leftPressed == true) {
 			direction = "left";
-			x -= speed;
+			worldX -= speed;
 		} 	
 		else if(keyH.rightPressed == true) {
 			direction = "right";
-			x += speed;
+			worldX += speed;
+		}
+			
+		if(keyH.upPressed == true && keyH.leftPressed == true) {
+			direction = "up";
+			worldY -= (speed / 2);
+			worldX -= (speed / 2);
+		}
+		else if (keyH.upPressed == true && keyH.rightPressed == true) {
+			direction = "up";
+			worldY -= (speed / 2);
+			worldX += (speed / 2);
+		}
+		else if (keyH.downPressed == true && keyH.leftPressed == true) {
+			direction = "down";
+			worldY += (speed / 2);
+			worldX -= (speed / 2);
+		}
+		else if (keyH.downPressed == true && keyH.rightPressed == true) {
+			direction = "down";
+			worldY += (speed / 2);
+			worldX += (speed / 2);
 		}
 		
 		spriteCounter++;
-		if(spriteCounter > 15) {
+		if(spriteCounter > 10) {
 			if(spriteNum == 1) {
 				spriteNum = 2;
 			}
 			else if (spriteNum == 2) {
+				spriteNum = 3;
+			}
+			else if (spriteNum == 3) {
 				spriteNum = 1;
 			}
 			spriteCounter = 0;
 		  }
+		} else {
+			spriteNum = 2;
+			if (direction != "up") {
+				notMoving++;
+				if (notMoving == 250) {
+					direction = "down";
+					notMoving = 0;
+			}
+			}
 		}
 		
 	}
@@ -113,6 +151,9 @@ public class Player extends Entity{
 			if (spriteNum == 2) {
 				image = up2;
 			}
+			if (spriteNum == 3) {
+				image = up3;
+			}
 			break;
 		case "down":
 			if(spriteNum == 1) {
@@ -120,6 +161,9 @@ public class Player extends Entity{
 			}
 			if (spriteNum == 2) {
 				image = down2;
+			}
+			if (spriteNum == 3) {
+				image = down3;
 			}
 			break;
 		case "left":
@@ -129,6 +173,9 @@ public class Player extends Entity{
 			if (spriteNum == 2) {
 				image = left2;
 			}
+			if (spriteNum == 3) {
+				image = left3;
+			}
 			break;
 		case "right":
 			if(spriteNum == 1) {
@@ -137,8 +184,11 @@ public class Player extends Entity{
 			if (spriteNum == 2) {
 				image = right2;
 			}
+			if (spriteNum == 3) {
+				image = right3;
+			}
 			break;
 		}
-		g2.drawImage(image, x, y, gp.tileSize, gp.tileSize, null);
+		g2.drawImage(image, screenX, screenY, eScale, eScale, null);
 	}
 }

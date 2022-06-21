@@ -15,11 +15,11 @@ public class GamePanel extends JPanel implements Runnable{
 	final int originalTileSize = 16;
 	final int scale = 4;
 
-	public final int tileSize = originalTileSize * scale;
-	public final int maxScreenCol = 16;
-	public final int maxScreenRow = 12;
-	public final int screenWidth = tileSize * maxScreenCol;
-	public final int screenHeight = tileSize * maxScreenRow;
+	public int tileSize = originalTileSize * scale;
+	public int maxScreenCol = 16;
+	public int maxScreenRow = 12;
+	public int screenWidth = tileSize * maxScreenCol;
+	public int screenHeight = tileSize * maxScreenRow;
 	
 	
 	public final int maxWorldCol = 50;
@@ -29,7 +29,7 @@ public class GamePanel extends JPanel implements Runnable{
 	int FPS = 60;
 	
 	TileManager tileM = new TileManager(this);
-	KeyHandler keyH = new KeyHandler();
+	KeyHandler keyH = new KeyHandler(this);
 	Thread gameThread;
 	public Player player = new Player(this, keyH);
 	
@@ -40,6 +40,25 @@ public class GamePanel extends JPanel implements Runnable{
 		this.setDoubleBuffered(true);
 		this.addKeyListener(keyH);
 		this.setFocusable(true);
+	}
+	
+	public void zoomInOut(int i) {
+		
+		int oldWorldWidth = tileSize * maxWorldCol;
+		
+		if (tileSize > 32) {
+			tileSize += i;
+		}
+		System.out.println(tileSize);
+		int newWorldWidth = tileSize * maxWorldCol;
+		
+		double multiplier = (double)newWorldWidth/oldWorldWidth;
+		
+		double newPlayerWorldX = player.worldX * multiplier;
+		double newPlayerWorldY = player.worldY * multiplier;
+		
+		player.worldX = newPlayerWorldX;
+		player.worldY = newPlayerWorldY;
 	}
 	
 	public void startGameThread() {

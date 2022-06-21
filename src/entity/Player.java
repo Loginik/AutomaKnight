@@ -1,6 +1,5 @@
 package entity;
 
-import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Rectangle;
@@ -29,6 +28,8 @@ public class Player extends Entity{
 	public Player(GamePanel gp, KeyHandler keyH) {
 		this.gp = gp;
 		this.keyH = keyH;
+		int eScale = gp.tileSize * scale;
+		
 		
 		screenX = gp.screenWidth / 2 - (eScale / 2);
 		screenY = gp.screenHeight / 2 - (eScale / 2);
@@ -36,6 +37,7 @@ public class Player extends Entity{
 		setDefaultValues();
 		getPlayerImage();
 	}
+
 	
 	public void setDefaultValues() {
 		
@@ -189,6 +191,6 @@ public class Player extends Entity{
 			}
 			break;
 		}
-		g2.drawImage(image, screenX, screenY, eScale, eScale, null);
+		g2.drawImage(image, screenX, screenY, gp.tileSize * scale, gp.tileSize * scale, null);
 	}
 }

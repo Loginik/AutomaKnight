@@ -45,12 +45,13 @@ public class GamePanel extends JPanel implements Runnable{
 	public void zoomInOut(int i) {
 		
 		int oldWorldWidth = tileSize * maxWorldCol;
-		
 		if (tileSize > 32) {
 			tileSize += i;
 		}
 		System.out.println(tileSize);
 		int newWorldWidth = tileSize * maxWorldCol;
+		
+		player.speed = (double)newWorldWidth / 600;
 		
 		double multiplier = (double)newWorldWidth/oldWorldWidth;
 		

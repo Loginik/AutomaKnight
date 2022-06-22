@@ -30,10 +30,10 @@ public class Player extends Entity{
 		this.keyH = keyH;
 		int eScale = gp.tileSize * scale;
 		
-		
 		screenX = gp.screenWidth / 2 - (eScale / 2);
 		screenY = gp.screenHeight / 2 - (eScale / 2);
 		
+		solidArea = new Rectangle(8, 16, 32, 32);
 		setDefaultValues();
 		getPlayerImage();
 	}
@@ -44,6 +44,7 @@ public class Player extends Entity{
 		worldX = gp.tileSize * 23;
 		worldY = gp.tileSize * 21;
 		speed = 4;
+		speed = gp.worldWidth / 600;
 		direction = "down";
 	}
 	

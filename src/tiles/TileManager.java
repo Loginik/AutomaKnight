@@ -27,22 +27,25 @@ public class TileManager {
 		loadMap("/maps/world01.txt");
 	}
 	
-	public void tileConstructor(int tileNum,String path) {
+	public void tileConstructor(int tileNum,String path, boolean collision) {
 		tile[tileNum] = new Tile();
 		try {
 			tile[tileNum].image = ImageIO.read(getClass().getResourceAsStream(path));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		if(collision == true) {
+			tile[tileNum].collision = true;
+		}
 	}
 	public void getTileImage() {
 		
-			tileConstructor(0, "/tiles/grass.png");
-			tileConstructor(1, "/tiles/wall.png");
-			tileConstructor(2, "/tiles/water.png");
-			tileConstructor(3, "/tiles/earth.png");
-			tileConstructor(4, "/tiles/tree.png");
-			tileConstructor(5, "/tiles/sand.png");
+			tileConstructor(0, "/tiles/grass.png",false);
+			tileConstructor(1, "/tiles/wall.png",true);
+			tileConstructor(2, "/tiles/water.png",true);
+			tileConstructor(3, "/tiles/earth.png",false);
+			tileConstructor(4, "/tiles/tree.png",true);
+			tileConstructor(5, "/tiles/sand.png",false);
 	}
 	public void loadMap(String path) {
 		try {

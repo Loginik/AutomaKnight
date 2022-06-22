@@ -113,6 +113,9 @@ public class Player extends Entity{
 			worldX += (speed / 2);
 		}
 		
+		collisionOn = false;
+		gp.colChecker.checkTile(this);
+		
 		spriteCounter++;
 		if(spriteCounter > 10) {
 			if(spriteNum == 1) {
